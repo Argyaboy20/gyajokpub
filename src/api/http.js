@@ -48,5 +48,6 @@ export async function http(path, { method = 'GET', body, form, auth = false } = 
     if (res.status === 401 && auth) saatTidakSah() // token ditolak: paksa keluar
     throw new ApiError(res.status, data?.message ?? 'Terjadi kesalahan')
   }
+  if (data === null) throw new ApiError(res.status, 'Respons server tidak valid')
   return data
 }
