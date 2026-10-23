@@ -58,10 +58,10 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  async function login(emailInput, password, kodeAkses) {
+  async function login(emailInput, password, kodeAkses, turnstileToken = '') {
     const r = await http('/api/auth/admin/login', {
       method: 'POST',
-      body: { email: emailInput, password, kodeAkses },
+      body: { email: emailInput, password, kodeAkses, turnstileToken },
     })
     pasangSesi(r.token, r.expiresInSeconds, r.admin.email)
     jadwalkanPerpanjang()

@@ -2,6 +2,7 @@
 import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { X, Send, MessageCircle } from 'lucide-vue-next'
 import { http } from '@/api/http'
+import { buatTurnstile } from '@/utils/turnstile'
 
 const SAPAAN = 'Halo! Ada yang bisa kami bantu?'
 const RIWAYAT_MAKS = 10
@@ -16,6 +17,8 @@ const kolom = ref(null)
 let nomor = 0
 let timerSapaan = null
 let sapaanSudah = false
+const kotakTurnstile = ref(null)
+let turnstile = null
 const diperluas = ref(true) // pil bertuliskan teks tampil dulu, lalu mengecil jadi ikon
 let timerPil = null
 
@@ -41,13 +44,18 @@ function tampilkanSapaan() {
 
 watch(buka, async (b) => {
   kunciHalaman(b)
-  if (!b) return
+  if (!b) {
+    turnstile?.hancurkan()
+    turnstile = null
+    return
+  }
   // Pertama kali dibuka: ruang chat kosong dulu, sapaan muncul setelah 1 detik
   if (!sapaanSudah) {
     sapaanSudah = true
     timerSapaan = setTimeout(tampilkanSapaan, JEDA_SAPAAN)
   }
   await nextTick()
+  if (!turnstile) turnstile = buatTurnstile(kotakTurnstile.value)
   if (!layarPonsel()) kolom.value?.focus() // di ponsel jangan langsung memunculkan keyboard
   gulir()
 })
@@ -57,6 +65,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  turnstile?.hancurkan()
   clearTimeout(timerPil)
   clearTimeout(timerSapaan)
   kunciHalaman(false)
@@ -81,7 +90,8 @@ async function kirim() {
   gulir()
 
   try {
-    const r = await http('/api/chat', { method: 'POST', body: { pesan: teks, riwayat } })
+    const turnstileToken = turnstile ? await turnstile.ambilToken() : ''
+    const r = await http('/api/chat', { method: 'POST', body: { pesan: teks, riwayat, turnstileToken } })
     pesan.value.push({ id: nomor++, dari: 'bot', teks: r.jawaban, riwayat: true })
   } catch (e) {
     pesan.value.push({ id: nomor++, dari: 'bot', teks: e.message, riwayat: false })
@@ -111,6 +121,7 @@ async function kirim() {
             <p v-for="p in pesan" :key="p.id" class="gelembung" :class="p.dari">{{ p.teks }}</p>
             <p v-if="mengirim" key="mengetik" class="gelembung bot mengetik">Sedang mengetik…</p>
           </TransitionGroup>
+          <div ref="kotakTurnstile" class="turnstile"></div>
         </div>
 
         <form class="isian" @submit.prevent="kirim">
@@ -126,6 +137,7 @@ async function kirim() {
           <button type="submit" :disabled="mengirim || !input.trim()" aria-label="Kirim">
             <Send :size="18" />
           </button>
+          <div ref="kotakTurnstile" class="turnstile"></div>
         </form>
 
         <p class="catatan">Dijawab oleh asisten AI dan bisa keliru. Untuk harga pasti, tanya admin lewat kontak.</p>
@@ -321,6 +333,12 @@ async function kirim() {
   color: var(--redup, #4a5568);
   font-size: 0.75rem;
   line-height: 1.35;
+}
+
+.turnstile {
+  display: flex;
+  flex: none;
+  justify-content: center;
 }
 
 /* Animasi: panel membuka */

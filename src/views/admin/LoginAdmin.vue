@@ -1,5 +1,6 @@
 <script setup>
-import { ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
+import { buatTurnstile } from '@/utils/turnstile'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
@@ -11,13 +12,20 @@ const password = ref('')
 const kodeAkses = ref('')
 const error = ref('')
 const memuat = ref(false)
+const kotakTurnstile = ref(null)
+  let turnstile = null
+  onMounted(() => {
+    turnstile = buatTurnstile(kotakTurnstile.value)
+  })
+  onUnmounted(() => turnstile?.hancurkan())
 
 async function kirim() {
   if (memuat.value) return
   error.value = ''
   memuat.value = true
   try {
-    await auth.login(email.value, password.value, kodeAkses.value)
+    const tt = turnstile ? await turnstile.ambilToken() : ''
+    await auth.login(email.value, password.value, kodeAkses.value, tt)
     password.value = ''
     kodeAkses.value = ''
     router.replace({ name: 'dashboard' })
@@ -57,6 +65,7 @@ async function kirim() {
         />
       </label>
 
+      <div ref="kotakTurnstile"></div>
       <p v-if="error" class="error" role="alert">{{ error }}</p>
 
       <button type="submit" :disabled="memuat">{{ memuat ? 'Memproses…' : 'Masuk' }}</button>
