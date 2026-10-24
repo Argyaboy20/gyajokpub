@@ -1,0 +1,65 @@
+:root {
+  /* Palet */
+  --navy-900: #0b2447;
+  --navy-700: #12406e;
+  --teal-600: #0f766e;
+  --teal-100: #d9f0ee;
+  --emas: #d4a94a;
+
+  --tinta: #14233a;
+  --redup: #51617a;
+  --kertas: #f3f7fa;
+  --permukaan: #ffffff;
+  --garis: #dae4ec;
+  --aksen: #0f766e;
+  --aksen-tua: #0b5f58;
+  --bahaya: #b3261e;
+  --ok: #1b6e4a;
+
+  --gradien: linear-gradient(135deg, #0b2447 0%, #12507a 55%, #0f766e 100%);
+  --bayangan: 0 12px 32px -14px rgba(11, 36, 71, 0.35);
+  --radius: 14px;
+
+  --font-isi: 'Instrument Sans Variable', system-ui, sans-serif;
+  --font-judul: 'Source Serif 4 Variable', Georgia, serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--kertas);
+  color: var(--tinta);
+  font-family: var(--font-isi);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+}
+
+button,
+input {
+  font-family: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--aksen);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

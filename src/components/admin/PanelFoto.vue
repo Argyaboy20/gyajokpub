@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { ArrowUp, ArrowDown, Trash2 } from 'lucide-vue-next'
+import { ArrowUp, ArrowDown, Trash2, Pencil } from 'lucide-vue-next'
 import { http } from '@/api/http'
 import UploadGambar from './UploadGambar.vue'
 
@@ -8,7 +8,7 @@ const props = defineProps({
   judul: { type: String, required: true },
   petunjuk: { type: String, default: '' },
   daftarUrl: { type: String, required: true }, // GET + POST; urutan = daftarUrl + '/urutan'
-  hapusUrl: { type: String, required: true }, // DELETE hapusUrl/:id
+  hapusUrl: { type: String, required: true }, // DELETE/PATCH hapusUrl/:id
   bentuk: { type: String, default: 'persegi' }, // 'bebas' (ikut foto) | 'persegi'
 })
 
@@ -17,6 +17,10 @@ const memuat = ref(true)
 const mengunggah = ref(false)
 const pesan = ref('')
 const error = ref('')
+
+const sedangEdit = ref(null) // id foto yang keterangannya sedang diubah
+const teksEdit = ref('')
+const menyimpan = ref(false)
 
 async function muat() {
   try {
@@ -79,37 +83,96 @@ async function geser(i, arah) {
     error.value = e.message
   }
 }
+
+function mulaiEdit(item) {
+  error.value = ''
+  pesan.value = ''
+  sedangEdit.value = item.id
+  teksEdit.value = item.keterangan ?? ''
+}
+
+async function simpanKeterangan(item) {
+  if (menyimpan.value) return
+  menyimpan.value = true
+  error.value = ''
+  try {
+    const r = await http(`${props.hapusUrl}/${item.id}`, {
+      method: 'PATCH',
+      body: { keterangan: teksEdit.value },
+      auth: true,
+    })
+    item.keterangan = r.keterangan
+    sedangEdit.value = null
+    pesan.value = 'Keterangan disimpan'
+  } catch (e) {
+    error.value = e.message
+  } finally {
+    menyimpan.value = false
+  }
+}
 </script>
 
 <template>
   <section>
-    <h2>{{ judul }}</h2>
-    <p v-if="petunjuk" class="petunjuk">{{ petunjuk }}</p>
+    <header class="kepala">
+      <div>
+        <h2>{{ judul }}</h2>
+        <p v-if="petunjuk" class="petunjuk">{{ petunjuk }}</p>
+      </div>
+      <span v-if="!memuat" class="jumlah">{{ daftar.length }} foto</span>
+    </header>
 
     <UploadGambar :memuat="mengunggah" @pilih="unggah" />
 
     <p v-if="pesan" class="ok" role="status">{{ pesan }}</p>
     <p v-if="error" class="error" role="alert">{{ error }}</p>
 
-    <p v-if="memuat">Memuat…</p>
-    <p v-else-if="!daftar.length" class="kosong">Belum ada foto.</p>
+    <p v-if="memuat" class="info">Memuat…</p>
+    <p v-else-if="!daftar.length" class="info">Belum ada foto.</p>
 
     <ul v-else class="grid">
-      <li v-for="(item, i) in daftar" :key="item.id" class="kartu">
-        <img
-          :src="item.url"
-          alt=""
-          loading="lazy"
-          :class="bentuk === 'persegi' ? 'persegi' : 'bebas'"
-          :style="bentuk === 'bebas' && item.lebar ? { aspectRatio: item.lebar + ' / ' + item.tinggi } : null"
-        />
+      <li v-for="(item, i) in daftar" :key="item.id" class="kartu" :class="{ mengubah: sedangEdit === item.id }">
+        <div class="gambar">
+          <img
+            :src="item.url"
+            alt=""
+            loading="lazy"
+            :class="bentuk === 'persegi' ? 'persegi' : 'bebas'"
+            :style="bentuk === 'bebas' && item.lebar ? { aspectRatio: item.lebar + ' / ' + item.tinggi } : null"
+          />
+          <span class="nomor">{{ i + 1 }}</span>
+        </div>
+
+        <form v-if="sedangEdit === item.id" class="ubah" @submit.prevent="simpanKeterangan(item)">
+          <label :for="'ket-' + item.id">Keterangan foto {{ i + 1 }}</label>
+          <textarea
+            :id="'ket-' + item.id"
+            v-model="teksEdit"
+            rows="3"
+            maxlength="200"
+            placeholder="Contoh: Sinta 3 – Hukum (Terbit)"
+          ></textarea>
+          <span class="hitung">{{ teksEdit.length }}/200</span>
+          <div class="tombol">
+            <button type="submit" class="primer" :disabled="menyimpan">
+              {{ menyimpan ? 'Menyimpan…' : 'Simpan' }}
+            </button>
+            <button type="button" class="sekunder" @click="sedangEdit = null">Batal</button>
+          </div>
+        </form>
+        <p v-else class="ket" :class="{ kosong: !item.keterangan }">
+          {{ item.keterangan || 'Belum ada keterangan' }}
+        </p>
+
         <div class="aksi">
-          <span class="nomor">#{{ i + 1 }}</span>
           <button type="button" :disabled="i === 0" aria-label="Geser ke depan" @click="geser(i, -1)">
             <ArrowUp :size="16" />
           </button>
           <button type="button" :disabled="i === daftar.length - 1" aria-label="Geser ke belakang" @click="geser(i, 1)">
             <ArrowDown :size="16" />
+          </button>
+          <button type="button" aria-label="Ubah keterangan" @click="mulaiEdit(item)">
+            <Pencil :size="16" />
           </button>
           <button type="button" class="bahaya" aria-label="Hapus foto" @click="hapus(item)">
             <Trash2 :size="16" />
@@ -122,34 +185,64 @@ async function geser(i, arah) {
 
 <style scoped>
 /* Mobile (<641px) = default */
+.kepala {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
 h2 {
-  margin: 0 0 0.25rem;
+  margin: 0;
+  font-family: var(--font-judul);
   font-size: 1.15rem;
-  overflow-wrap: anywhere;
+  line-height: 1.25;
 }
 .petunjuk {
-  margin: 0 0 0.75rem;
-  color: #555;
+  margin: 0.2rem 0 0;
+  color: var(--redup);
   font-size: 0.85rem;
 }
+.jumlah {
+  flex: none;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  background: var(--teal-100);
+  color: var(--aksen-tua);
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
 .grid {
-  list-style: none;
-  margin: 1rem 0 0;
-  padding: 0;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.6rem;
+  gap: 0.7rem;
   align-items: start;
+  margin: 1.1rem 0 0;
+  padding: 0;
+  list-style: none;
 }
 .kartu {
-  border: 1px solid #ddd;
-  border-radius: 10px;
   overflow: hidden;
+  border: 1px solid var(--garis);
+  border-radius: 12px;
+  background: #fff;
+  transition: box-shadow 0.2s ease;
+}
+.kartu:hover {
+  box-shadow: var(--bayangan);
+}
+.kartu.mengubah {
+  grid-column: 1 / -1;
+}
+.gambar {
+  position: relative;
+  background: #eef3f7;
 }
 img {
   display: block;
   width: 100%;
-  background: #f1f1f1;
 }
 img.persegi {
   aspect-ratio: 1 / 1;
@@ -158,43 +251,126 @@ img.persegi {
 img.bebas {
   object-fit: cover;
 }
+.nomor {
+  position: absolute;
+  top: 0.4rem;
+  left: 0.4rem;
+  display: grid;
+  place-items: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 0.4rem;
+  border-radius: 999px;
+  background: rgba(11, 36, 71, 0.82);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.ket {
+  margin: 0;
+  padding: 0.5rem 0.6rem 0;
+  font-size: 0.85rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+.ket.kosong {
+  color: #8a98ab;
+  font-style: italic;
+}
+.ubah {
+  display: grid;
+  gap: 0.4rem;
+  padding: 0.6rem;
+}
+.ubah label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+textarea {
+  width: 100%;
+  min-height: 4.5rem;
+  padding: 0.6rem;
+  border: 1px solid #c4d2de;
+  border-radius: 10px;
+  font-size: 1rem;
+  resize: vertical;
+}
+textarea:focus {
+  border-color: var(--aksen);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.18);
+}
+.hitung {
+  justify-self: end;
+  color: var(--redup);
+  font-size: 0.75rem;
+}
+.tombol {
+  display: flex;
+  gap: 0.5rem;
+}
+.primer,
+.sekunder {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.primer {
+  border: 0;
+  background: linear-gradient(135deg, var(--navy-700), var(--teal-600));
+  color: #fff;
+}
+.primer:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+.sekunder {
+  border: 1px solid var(--garis);
+  background: #fff;
+  color: var(--tinta);
+}
+
 .aksi {
   display: flex;
-  align-items: center;
+  justify-content: flex-end;
   gap: 0.3rem;
-  padding: 0.35rem 0.4rem;
-}
-.nomor {
-  flex: 1;
-  font-size: 0.75rem;
-  color: #666;
+  padding: 0.45rem 0.5rem 0.5rem;
 }
 .aksi button {
   display: grid;
   place-items: center;
   width: 36px;
   height: 36px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  border: 1px solid var(--garis);
+  border-radius: 8px;
   background: #fff;
+  color: var(--tinta);
   cursor: pointer;
+}
+.aksi button:hover:not(:disabled) {
+  background: var(--kertas);
 }
 .aksi button:disabled {
   opacity: 0.35;
   cursor: default;
 }
 .aksi .bahaya {
-  color: #b00020;
+  color: var(--bahaya);
 }
-.kosong {
-  color: #666;
+
+.info {
+  color: var(--redup);
 }
 .ok {
-  color: #1b6e2d;
+  margin: 0.75rem 0 0;
+  color: var(--ok);
   font-size: 0.85rem;
 }
 .error {
-  color: #b00020;
+  margin: 0.75rem 0 0;
+  color: var(--bahaya);
   font-size: 0.85rem;
 }
 
@@ -215,11 +391,7 @@ img.bebas {
 /* Desktop */
 @media (min-width: 768px) {
   h2 {
-    font-size: 1.45rem;
-  }
-  .grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1rem;
+    font-size: 1.4rem;
   }
   .aksi button {
     width: 32px;
@@ -230,15 +402,11 @@ img.bebas {
 /* Large desktop */
 @media (min-width: 1024px) {
   h2 {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
   }
   .grid {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 1.25rem;
-  }
-  .aksi button {
-    width: 30px;
-    height: 30px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
   }
 }
 </style>

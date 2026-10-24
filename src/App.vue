@@ -19,17 +19,3 @@ watch(
 <template>
   <RouterView />
 </template>
-
-<style>
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-body {
-  margin: 0;
-}
-img {
-  max-width: 100%;
-}
-</style>

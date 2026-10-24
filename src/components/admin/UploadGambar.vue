@@ -33,8 +33,9 @@ function saatPilih(e) {
 <template>
   <div>
     <label class="zona" :class="{ nonaktif: memuat }">
-      <Upload :size="20" aria-hidden="true" />
-      <span>{{ memuat ? 'Mengunggah…' : 'Pilih foto (maks 10 sekali upload, maks 8 MB per foto)' }}</span>
+      <span class="lingkar"><Upload :size="20" aria-hidden="true" /></span>
+      <strong>{{ memuat ? 'Mengunggah…' : 'Pilih foto untuk diunggah' }}</strong>
+      <small>Maks 10 foto sekali upload · maks 8 MB per foto</small>
       <input class="sembunyi" type="file" accept="image/*" multiple :disabled="memuat" @change="saatPilih" />
     </label>
     <p v-if="pesan" class="error" role="alert">{{ pesan }}</p>
@@ -44,24 +45,48 @@ function saatPilih(e) {
 <style scoped>
 /* Mobile (<641px) = default */
 .zona {
+  position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-  padding: 1rem;
-  border: 2px dashed #bbb;
-  border-radius: 12px;
-  font-size: 0.85rem;
+  gap: 0.35rem;
+  padding: 1.1rem 1rem;
+  border: 2px dashed #9fb6c8;
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, #f8fbfd, #eef5f8);
   text-align: center;
   cursor: pointer;
-  position: relative;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+.zona:hover {
+  border-color: var(--aksen);
+  background: #eaf5f4;
 }
 .zona:focus-within {
-  outline: 2px solid #111;
+  outline: 3px solid var(--aksen);
+  outline-offset: 2px;
 }
 .zona.nonaktif {
   opacity: 0.6;
   cursor: wait;
+}
+.lingkar {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--gradien);
+  color: #fff;
+}
+strong {
+  font-size: 0.95rem;
+}
+small {
+  color: var(--redup);
+  font-size: 0.8rem;
 }
 .sembunyi {
   position: absolute;
@@ -71,30 +96,38 @@ function saatPilih(e) {
 }
 .error {
   margin: 0.5rem 0 0;
-  color: #b00020;
+  color: var(--bahaya);
   font-size: 0.85rem;
 }
 
 /* Tablet */
 @media (min-width: 641px) {
   .zona {
-    padding: 1.2rem;
-    font-size: 0.9rem;
+    padding: 1.4rem 1.25rem;
   }
 }
 
 /* Desktop */
 @media (min-width: 768px) {
   .zona {
-    padding: 1.6rem;
-    font-size: 1rem;
+    flex-direction: row;
+    justify-content: center;
+    gap: 0.9rem;
+    padding: 1.5rem;
+    text-align: left;
+  }
+  .zona small {
+    display: block;
   }
 }
 
 /* Large desktop */
 @media (min-width: 1024px) {
   .zona {
-    padding: 2rem;
+    padding: 1.75rem;
+  }
+  strong {
+    font-size: 1rem;
   }
 }
 </style>

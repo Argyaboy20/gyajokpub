@@ -6,6 +6,7 @@ import { useAuthStore } from './stores/auth'
 import { pasangAuth } from './api/http'
 import '@fontsource-variable/source-serif-4'
 import '@fontsource-variable/instrument-sans'
+import './styles/tema.css'
 
 const app = createApp(App)
 const pinia = createPinia()

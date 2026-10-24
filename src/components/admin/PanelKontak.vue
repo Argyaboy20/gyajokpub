@@ -105,11 +105,12 @@ async function hapus(jenis) {
 /* Mobile (<641px) = default */
 h2 {
   margin: 0 0 0.25rem;
+  font-family: var(--font-judul);
   font-size: 1.15rem;
 }
 .petunjuk {
-  margin: 0 0 0.75rem;
-  color: #555;
+  margin: 0 0 1rem;
+  color: var(--redup);
   font-size: 0.85rem;
 }
 .daftar {
@@ -118,24 +119,34 @@ h2 {
 }
 .baris {
   display: grid;
-  gap: 0.4rem;
-  padding: 0.8rem;
-  border: 1px solid #ddd;
-  border-radius: 10px;
+  gap: 0.45rem;
+  padding: 0.85rem;
+  border: 1px solid var(--garis);
+  border-radius: 12px;
+  background: #fff;
 }
 .label {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.55rem;
   font-weight: 600;
+}
+.label svg {
+  color: var(--aksen);
 }
 input {
   width: 100%;
   min-width: 0;
-  padding: 0.6rem;
-  border: 1px solid #bbb;
-  border-radius: 8px;
+  height: 44px;
+  padding: 0 0.85rem;
+  border: 1px solid #c4d2de;
+  border-radius: 10px;
   font-size: 1rem;
+}
+input:focus {
+  border-color: var(--aksen);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.18);
 }
 .tombol {
   display: grid;
@@ -143,17 +154,19 @@ input {
   gap: 0.5rem;
 }
 button {
-  padding: 0.6rem 1rem;
+  height: 40px;
+  padding: 0 1rem;
   border: 0;
-  border-radius: 8px;
-  background: #111;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--navy-700), var(--teal-600));
   color: #fff;
+  font-weight: 600;
   cursor: pointer;
 }
 button.hapus {
+  border: 1px solid #e3b4b0;
   background: #fff;
-  color: #b00020;
-  border: 1px solid #b00020;
+  color: var(--bahaya);
 }
 button:disabled {
   opacity: 0.6;
@@ -161,12 +174,12 @@ button:disabled {
 }
 .ok {
   margin: 0;
-  color: #1b6e2d;
+  color: var(--ok);
   font-size: 0.85rem;
 }
 .error {
   margin: 0;
-  color: #b00020;
+  color: var(--bahaya);
   font-size: 0.85rem;
 }
 
@@ -186,10 +199,10 @@ button:disabled {
 /* Desktop */
 @media (min-width: 768px) {
   h2 {
-    font-size: 1.45rem;
+    font-size: 1.4rem;
   }
   .baris {
-    grid-template-columns: 150px minmax(0, 1fr) auto;
+    grid-template-columns: 140px minmax(0, 1fr) auto;
     align-items: center;
     gap: 0.75rem;
   }
@@ -202,10 +215,10 @@ button:disabled {
 /* Large desktop */
 @media (min-width: 1024px) {
   h2 {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
   }
   .baris {
-    grid-template-columns: 180px minmax(0, 1fr) auto;
+    grid-template-columns: 170px minmax(0, 1fr) auto;
     padding: 1.1rem 1.25rem;
   }
 }
