@@ -4,11 +4,11 @@ import { useRouter } from 'vue-router'
 import { Mail, LockKeyhole, KeyRound, Eye, EyeOff, ShieldCheck, LoaderCircle, CircleAlert } from 'lucide-vue-next'
 import { useAuthStore } from '@/stores/auth'
 import { buatTurnstile } from '@/utils/turnstile'
+import LOGO from '../../../assets/logogyajokpub.png'
 
 const auth = useAuthStore()
 const router = useRouter()
 
-const LOGO = '/assets/logogyajokpub.png'
 const logoGagal = ref(false)
 
 const email = ref('')

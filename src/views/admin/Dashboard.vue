@@ -4,10 +4,10 @@ import { LogOut, Award, Tag, FileText, Contact, ExternalLink } from 'lucide-vue-
 import { useAuthStore } from '@/stores/auth'
 import PanelFoto from '@/components/admin/PanelFoto.vue'
 import PanelKontak from '@/components/admin/PanelKontak.vue'
+import LOGO from '../../../assets/logogyajokpub.png'
 
 const auth = useAuthStore()
 
-const LOGO = '/logo.png'
 const logoGagal = ref(false)
 
 const TAB = [
