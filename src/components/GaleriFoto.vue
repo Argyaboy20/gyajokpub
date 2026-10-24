@@ -27,24 +27,15 @@ const emit = defineEmits(['buka'])
 </template>
 
 <style scoped>
-/* Mobile (<641px) = default */
+/* Mobile (<641px) = default: 2 foto per baris */
 .galeri {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.bebas {
-  column-count: 2;
-  column-gap: 0.7rem;
-}
-.bebas li {
-  break-inside: avoid;
-  margin-bottom: 0.7rem;
-}
-.persegi {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.7rem;
+  align-items: start; /* tinggi tiap frame mengikuti bentuk fotonya */
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 .kartu {
   margin: 0;
@@ -89,16 +80,10 @@ figcaption {
   overflow-wrap: anywhere;
 }
 
-/* Tablet */
+/* Tablet: 4 foto per baris */
 @media (min-width: 641px) {
-  .bebas {
-    column-count: 3;
-    column-gap: 0.9rem;
-  }
-  .bebas li {
-    margin-bottom: 0.9rem;
-  }
-  .persegi {
+  .galeri {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 0.9rem;
   }
   figcaption {
@@ -108,25 +93,15 @@ figcaption {
 
 /* Desktop */
 @media (min-width: 768px) {
-  .persegi {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .galeri {
     gap: 1.1rem;
-  }
-  .bebas {
-    column-gap: 1.1rem;
-  }
-  .bebas li {
-    margin-bottom: 1.1rem;
   }
 }
 
 /* Large desktop */
 @media (min-width: 1024px) {
-  .bebas {
-    column-count: 4;
-  }
-  .persegi {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+  .galeri {
+    gap: 1.25rem;
   }
 }
 </style>
