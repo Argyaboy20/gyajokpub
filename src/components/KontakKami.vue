@@ -35,11 +35,11 @@ const tampil = computed(() =>
 <style scoped>
 /* Mobile (<641px) = default */
 .daftar {
-  list-style: none;
-  margin: 0;
-  padding: 0;
   display: grid;
   gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 a {
   display: flex;
@@ -47,21 +47,22 @@ a {
   justify-content: center;
   gap: 0.6rem;
   padding: 0.85rem 1rem;
-  border: 1px solid var(--garis, #d9dfe7);
-  border-radius: 8px;
+  border-radius: 12px;
   background: #fff;
-  color: var(--tinta, #16233b);
-  font-weight: 600;
+  color: var(--navy-900);
+  font-weight: 700;
   text-decoration: none;
+  box-shadow: 0 6px 16px -10px rgba(0, 0, 0, 0.5);
+  transition:
+    background 0.2s ease,
+    transform 0.15s ease;
 }
 a:hover {
-  background: var(--tinta, #16233b);
-  border-color: var(--tinta, #16233b);
-  color: #fff;
+  background: var(--emas);
+  transform: translateY(-2px);
 }
 a:focus-visible {
-  outline: 3px solid var(--aksen, #0b6e72);
-  outline-offset: 2px;
+  outline-color: #fff;
 }
 
 /* Tablet */
@@ -72,7 +73,7 @@ a:focus-visible {
     gap: 0.75rem;
   }
   a {
-    padding: 0.75rem 1.25rem;
+    padding: 0.8rem 1.35rem;
   }
 }
 
@@ -82,14 +83,14 @@ a:focus-visible {
     gap: 1rem;
   }
   a {
-    padding: 0.85rem 1.5rem;
+    padding: 0.9rem 1.6rem;
   }
 }
 
 /* Large desktop */
 @media (min-width: 1024px) {
   a {
-    padding: 0.95rem 1.75rem;
+    padding: 1rem 1.9rem;
     font-size: 1.05rem;
   }
 }

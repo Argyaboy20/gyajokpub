@@ -49,7 +49,10 @@ onUnmounted(lepas)
       <button v-if="index > 0" type="button" class="panah kiri" aria-label="Foto sebelumnya" @click="sebelum">
         <ChevronLeft :size="26" />
       </button>
-      <img :src="foto[index].url" :alt="`Foto ${index + 1} dari ${foto.length}`" />
+      <figure class="figur">
+        <img :src="foto[index].url" :alt="foto[index].keterangan || `Foto ${index + 1} dari ${foto.length}`" />
+        <figcaption v-if="foto[index].keterangan">{{ foto[index].keterangan }}</figcaption>
+      </figure>
       <button v-if="index < foto.length - 1" type="button" class="panah kanan" aria-label="Foto berikutnya" @click="sesudah">
         <ChevronRight :size="26" />
       </button>
@@ -68,10 +71,26 @@ onUnmounted(lepas)
   padding: 3.5rem 0.5rem;
   background: rgba(14, 20, 34, 0.94);
 }
-img {
+.figur {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
   max-width: 100%;
-  max-height: 100%;
+  margin: 0;
+}
+.figur img {
+  max-width: 100%;
+  max-height: calc(100dvh - 12rem);
   object-fit: contain;
+}
+.figur figcaption {
+  max-width: 60ch;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
 }
 .tutup,
 .panah {

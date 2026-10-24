@@ -10,15 +10,18 @@ const emit = defineEmits(['buka'])
 <template>
   <ul class="galeri" :class="bentuk">
     <li v-for="(f, i) in foto" :key="f.id">
-      <button type="button" class="bingkai" @click="emit('buka', i)">
-        <img
-          :src="f.url"
-          :alt="`${label} ${i + 1}`"
-          loading="lazy"
-          decoding="async"
-          :style="bentuk === 'bebas' && f.lebar ? { aspectRatio: f.lebar + ' / ' + f.tinggi } : null"
-        />
-      </button>
+      <figure class="kartu">
+        <button type="button" class="bingkai" @click="emit('buka', i)">
+          <img
+            :src="f.url"
+            :alt="f.keterangan || `${label} ${i + 1}`"
+            loading="lazy"
+            decoding="async"
+            :style="bentuk === 'bebas' && f.lebar ? { aspectRatio: f.lebar + ' / ' + f.tinggi } : null"
+          />
+        </button>
+        <figcaption v-if="f.keterangan">{{ f.keterangan }}</figcaption>
+      </figure>
     </li>
   </ul>
 </template>
@@ -26,36 +29,47 @@ const emit = defineEmits(['buka'])
 <style scoped>
 /* Mobile (<641px) = default */
 .galeri {
-  list-style: none;
   margin: 0;
   padding: 0;
+  list-style: none;
 }
 .bebas {
   column-count: 2;
-  column-gap: 0.6rem;
+  column-gap: 0.7rem;
 }
 .bebas li {
   break-inside: avoid;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.7rem;
 }
 .persegi {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.6rem;
+  gap: 0.7rem;
+}
+.kartu {
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--garis);
+  border-radius: 12px;
+  background: #fff;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.kartu:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--bayangan);
 }
 .bingkai {
   display: block;
   width: 100%;
   padding: 0;
-  border: 1px solid var(--garis, #d9dfe7);
-  border-radius: 6px;
-  overflow: hidden;
-  background: #fff;
+  border: 0;
+  background: #f1f6f9;
   cursor: zoom-in;
 }
 .bingkai:focus-visible {
-  outline: 3px solid var(--aksen, #0b6e72);
-  outline-offset: 2px;
+  outline-offset: -3px;
 }
 img {
   display: block;
@@ -66,18 +80,29 @@ img {
   aspect-ratio: 1 / 1;
   object-fit: contain; /* foto tidak terpotong agar harga tetap terbaca */
 }
+figcaption {
+  padding: 0.55rem 0.7rem 0.7rem;
+  border-top: 1px solid var(--garis);
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
 
 /* Tablet */
 @media (min-width: 641px) {
   .bebas {
     column-count: 3;
-    column-gap: 0.8rem;
+    column-gap: 0.9rem;
   }
   .bebas li {
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.9rem;
   }
   .persegi {
-    gap: 0.8rem;
+    gap: 0.9rem;
+  }
+  figcaption {
+    font-size: 0.9rem;
   }
 }
 
@@ -85,13 +110,13 @@ img {
 @media (min-width: 768px) {
   .persegi {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1rem;
+    gap: 1.1rem;
   }
   .bebas {
-    column-gap: 1rem;
+    column-gap: 1.1rem;
   }
   .bebas li {
-    margin-bottom: 1rem;
+    margin-bottom: 1.1rem;
   }
 }
 
