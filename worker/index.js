@@ -24,4 +24,10 @@ export default {
     const status = objek.body ? 200 : 304
     return new Response(request.method === 'HEAD' ? null : objek.body, { status, headers })
   },
+
+  async scheduled(_event, _env, ctx) {
+    ctx.waitUntil(
+      fetch('https://gyajokpub-api.onrender.com/api/ping', { signal: AbortSignal.timeout(60000) }).catch(() => {}),
+    )
+  },
 }

@@ -58,7 +58,7 @@ function ganti(i) {
 
       <p v-if="konten.memuat" class="status" role="status">
         <LoaderCircle class="putar" :size="20" aria-hidden="true" />
-        {{ konten.lambat ? 'Server sedang bangun, mohon tunggu sebentar…' : 'Memuat konten…' }}
+        {{ konten.lambat ? 'Mohon tunggu sebentar ya...' : 'Memuat konten…' }}
       </p>
 
       <div v-else-if="konten.error" class="status" role="alert">
