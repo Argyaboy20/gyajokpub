@@ -9,19 +9,20 @@ const router = createRouter({
       path: '/loginadmin',
       name: 'login-admin',
       component: () => import('@/views/admin/LoginAdmin.vue'),
-      meta: { tamu: true },
+      meta: { tamu: true, judul: 'GyaJokPub - Login Admin' },
     },
     {
       path: '/admin/dashboard',
       name: 'dashboard',
       component: () => import('@/views/admin/Dashboard.vue'),
-      meta: { admin: true },
+      meta: { admin: true, judul: 'GyaJokPub - Dashboard Admin' },
     },
     { path: '/:pathMatch(.*)*', redirect: '/' },
   ],
 })
 
 router.beforeEach((to) => {
+  document.title = to.meta.judul ?? 'GyaJokPub'
   const auth = useAuthStore()
   // Tanpa sesi, halaman admin dialihkan ke beranda (tidak membocorkan alamat login)
   if (to.meta.admin && !auth.masuk) return { name: 'landing' }

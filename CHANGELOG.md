@@ -16,6 +16,15 @@ Sebelum merilis versi baru: tambahkan entri di paling atas, ubah `version` di `p
 
 ---
 
+## [2.5] - 2026-10-24
+
+### Diubah
+- `[FE]` Judul tab browser kini berbeda per halaman: `GyaJokPub - Login Admin` dan `GyaJokPub - Dashboard Admin` (halaman publik tetap `GyaJokPub`).
+- `[BE]` Asisten AI dilatih ulang dengan data banner resmi: kisaran harga tiap jenis jurnal, estimasi waktu, ketersediaan Fasttrack dan Reguler, penulisan artikel, dan keunggulan layanan. AI kini menyebut harga hanya sebagai **kisaran**, dan harga pasti diarahkan ke admin.
+
+### Diperbaiki
+- `[BE]` Data layanan AI: Non Sinta Internasional tersedia Fasttrack dan Reguler (sebelumnya tertulis hanya Reguler), dan Sinta 6 masuk daftar layanan (sebelumnya hanya Sinta 1 sampai 5).
+
 ## [2.4] - 2026-10-24
 
 ### Diperbaiki

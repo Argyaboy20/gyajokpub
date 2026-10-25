@@ -4,7 +4,7 @@ Website jasa pendampingan publikasi jurnal **GyaJokPub** ("Publication Made Simp
 
 - Situs: https://gyajokpub.com
 - API: https://gyajokpub-api.onrender.com
-- Versi saat ini: **2.4** (lihat [CHANGELOG.md](CHANGELOG.md))
+- Versi saat ini: **2.5** (lihat [CHANGELOG.md](CHANGELOG.md))
 
 Repo ini adalah **frontend**. Backend ada di repo terpisah: `gyajokpub-backend`.
 
