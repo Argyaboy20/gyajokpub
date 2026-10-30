@@ -2,10 +2,14 @@
 import { onMounted, ref } from 'vue'
 import { ArrowRight, LoaderCircle } from 'lucide-vue-next'
 import { useKontenStore } from '@/stores/konten'
+import { vMuncul } from '@/utils/muncul'
 import GaleriFoto from '@/components/GaleriFoto.vue'
 import LightboxFoto from '@/components/LightboxFoto.vue'
 import KontakKami from '@/components/KontakKami.vue'
 import ChatWidget from '@/components/ChatWidget.vue'
+import LayananGyajokpub from '@/components/LayananGyajokpub.vue'
+import KeunggulanKami from '@/components/KeunggulanKami.vue'
+import AlurLayanan from '@/components/AlurLayanan.vue'
 import LOGO from '../../assets/logogyajokpub.png'
 
 const konten = useKontenStore()
@@ -48,7 +52,7 @@ function ganti(i) {
 
     <main class="konten">
       <section class="panel" aria-labelledby="h-tentang">
-        <h2 id="h-tentang">TENTANG GYAJOKPUB</h2>
+        <h2 id="h-tentang" v-muncul="{ arah: 'kiri' }">TENTANG GYAJOKPUB</h2>
         <p class="narasi">
           GyaJokPub hadir untuk memberikan solusi publikasi jurnal yang lebih mudah, aman, dan terjangkau. Mulai dari
           Sinta 1–6, non sinta nasional hingga non sinta internasional, hingga Scopus Q3 dan Q4 dengan pendampingan
@@ -56,9 +60,14 @@ function ganti(i) {
         </p>
       </section>
 
+      <section class="panel" aria-labelledby="h-layanan">
+        <h2 id="h-layanan" v-muncul="{ arah: 'kiri' }">LAYANAN GYAJOKPUB</h2>
+        <LayananGyajokpub />
+      </section>
+
       <p v-if="konten.memuat" class="status" role="status">
         <LoaderCircle class="putar" :size="20" aria-hidden="true" />
-        {{ konten.lambat ? 'Mohon tunggu sebentar ya...' : 'Memuat konten…' }}
+        {{ konten.lambat ? 'Server sedang bangun, mohon tunggu sebentar…' : 'Memuat konten…' }}
       </p>
 
       <div v-else-if="konten.error" class="status" role="alert">
@@ -66,9 +75,9 @@ function ganti(i) {
         <button type="button" @click="konten.muat">Coba lagi</button>
       </div>
 
-      <template v-else>
+      <template v-if="!konten.memuat && !konten.error">
         <section v-if="konten.data.trackRecord.length" class="panel" aria-labelledby="h-track">
-          <h2 id="h-track">TRACK RECORD PUBLIKASI</h2>
+          <h2 id="h-track" v-muncul="{ arah: 'kiri' }">TRACK RECORD PUBLIKASI</h2>
           <GaleriFoto
             :foto="konten.data.trackRecord"
             bentuk="bebas"
@@ -79,7 +88,7 @@ function ganti(i) {
 
         <template v-for="p in PRICELIST" :key="p.kunci">
           <section v-if="(konten.data.pricelist[p.kunci] ?? []).length" class="panel" :aria-labelledby="'h-' + p.kunci">
-            <h2 :id="'h-' + p.kunci">{{ p.judul }}</h2>
+            <h2 :id="'h-' + p.kunci" v-muncul="{ arah: 'kiri' }">{{ p.judul }}</h2>
             <GaleriFoto
               :foto="konten.data.pricelist[p.kunci]"
               bentuk="persegi"
@@ -88,12 +97,27 @@ function ganti(i) {
             />
           </section>
         </template>
-
-        <section v-if="konten.data.kontak.length" id="kontak" class="panel kontak" aria-labelledby="h-kontak">
-          <h2 id="h-kontak">KONTAK KAMI</h2>
-          <KontakKami :kontak="konten.data.kontak" />
-        </section>
       </template>
+
+      <section class="panel" aria-labelledby="h-kenapa">
+        <h2 id="h-kenapa" v-muncul="{ arah: 'kiri' }">KENAPA MEMILIH GYAJOKPUB</h2>
+        <KeunggulanKami />
+      </section>
+
+      <section class="panel" aria-labelledby="h-alur">
+        <h2 id="h-alur" v-muncul="{ arah: 'kiri' }">ALUR LAYANAN</h2>
+        <AlurLayanan />
+      </section>
+
+      <section
+        v-if="!konten.memuat && !konten.error && konten.data.kontak.length"
+        id="kontak"
+        class="panel kontak"
+        aria-labelledby="h-kontak"
+      >
+        <h2 id="h-kontak" v-muncul="{ arah: 'kiri' }">KONTAK KAMI</h2>
+        <KontakKami :kontak="konten.data.kontak" />
+      </section>
     </main>
 
     <footer class="kaki">
@@ -187,6 +211,7 @@ h1 {
 }
 .panel {
   padding: 1.25rem;
+  overflow-x: clip; /* animasi geser tidak memunculkan scroll horizontal */
   border: 1px solid var(--garis);
   border-radius: 18px;
   background: var(--permukaan);

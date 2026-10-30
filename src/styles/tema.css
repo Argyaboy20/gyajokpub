@@ -67,3 +67,31 @@ input {
     scroll-behavior: auto !important;
   }
 }
+
+/* Animasi muncul saat di-scroll (direktif v-muncul) */
+.muncul {
+  opacity: 0;
+  transform: translateY(28px) scale(0.97);
+  transition:
+    opacity 0.55s ease,
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--jeda, 0ms);
+}
+.muncul[data-arah='kiri'] {
+  transform: translateX(-36px);
+}
+.muncul[data-arah='kanan'] {
+  transform: translateX(36px);
+}
+.muncul[data-arah='pop'] {
+  transform: scale(0.4);
+  transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.muncul:not(.tampil) {
+  transition-delay: 0ms;
+  transition-duration: 0.3s; /* keluar lebih cepat daripada masuk */
+}
+.muncul.tampil {
+  opacity: 1;
+  transform: none;
+}
