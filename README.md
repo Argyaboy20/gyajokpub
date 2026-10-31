@@ -4,7 +4,7 @@ Website jasa pendampingan publikasi jurnal **GyaJokPub** ("Publication Made Simp
 
 - Situs: https://gyajokpub.com
 - API: https://gyajokpub-api.onrender.com
-- Versi saat ini: **2.5** (lihat [CHANGELOG.md](CHANGELOG.md))
+- Versi saat ini: **3.0** (lihat [CHANGELOG.md](CHANGELOG.md))
 
 Repo ini adalah **frontend**. Backend ada di repo terpisah: `gyajokpub-backend`.
 
@@ -12,9 +12,11 @@ Repo ini adalah **frontend**. Backend ada di repo terpisah: `gyajokpub-backend`.
 
 **Halaman publik** (`/`)
 - Logo, tagline, dan bagian Tentang
+- Layanan GyaJokPub (kartu berwarna dengan ikon)
 - Track Record Publikasi (frame mengikuti bentuk asli tiap foto)
 - Pricelist Publikasi Jurnal, Pricelist Non Sinta, dan Pricelist Pembuatan Artikel (frame 1:1)
 - Keterangan di bawah tiap foto, dan tampilan foto besar (lightbox)
+- Kenapa Memilih GyaJokPub (sembilan keunggulan) dan Alur Layanan (linimasa delapan langkah yang beranimasi mengikuti scroll)
 - Kontak Kami: WhatsApp, Email, Threads, X, Instagram
 - Asisten AI untuk pertanyaan seputar Sinta, non Sinta, Scopus Q3 dan Q4, serta jalur Fasttrack dan Reguler
 - Responsif dengan empat breakpoint: mobile (default, di bawah 641px), tablet (641px), desktop (768px), large desktop (1024px)
@@ -58,8 +60,9 @@ gyajokpub/
     router/index.js             /  /loginadmin  /admin/dashboard
     stores/                     auth.js (sesi admin), konten.js (data publik)
     styles/tema.css             warna, font, dan reset global
-    utils/                      sesi.js, turnstile.js
-    components/                 ChatWidget, GaleriFoto, LightboxFoto, KontakKami, BrandIcon
+    utils/                      sesi.js, turnstile.js, muncul.js (animasi saat di-scroll)
+    components/                 ChatWidget, GaleriFoto, LightboxFoto, KontakKami, BrandIcon,
+                                LayananGyajokpub, KeunggulanKami, AlurLayanan
     components/admin/           UploadGambar, PanelFoto, PanelKontak
     views/                      LandingPage.vue
     views/admin/                LoginAdmin.vue, Dashboard.vue

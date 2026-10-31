@@ -16,6 +16,21 @@ Sebelum merilis versi baru: tambahkan entri di paling atas, ubah `version` di `p
 
 ---
 
+## [3.0] - 2026-10-31
+
+Penambahan besar pada UI/UX landing page: tiga section baru dan sistem animasi saat di-scroll.
+
+### Ditambahkan
+- `[FE]` Section **LAYANAN GYAJOKPUB** (setelah Tentang): enam kartu berwarna dengan ikon, memuat Publikasi jurnal Sinta 1 – 6, nasional non-Sinta, internasional non-Sinta, pembuatan artikel dari nol, convert skripsi ke artikel jurnal, dan konsultasi pemilihan jurnal.
+- `[FE]` Section **KENAPA MEMILIH GYAJOKPUB** (setelah Pricelist Pembuatan Artikel): sembilan keunggulan dalam kartu berikon, dengan kartu Fasttrack yang disorot.
+- `[FE]` Section **ALUR LAYANAN**: linimasa delapan langkah (konsultasi sampai publish selesai). Garis penghubungnya terisi mengikuti posisi scroll, simpul langkah menyala saat terlewati, dan kartu masuk bergantian dari kiri dan kanan di layar lebar.
+- `[FE]` Sistem animasi `v-muncul` (`src/utils/muncul.js`): elemen beranimasi masuk saat terlihat dan keluar saat meninggalkan layar. Otomatis nonaktif untuk pengguna yang memilih mengurangi gerakan.
+- `[BE]` Asisten AI mengenal daftar layanan, alur layanan (termasuk DP 50%), dan akun OJS untuk memantau proses.
+
+### Diubah
+- `[FE]` `LandingPage.vue`: section statis (Layanan, Kenapa Memilih, Alur) tetap tampil walau data dari API gagal dimuat, dan panel mencegah geser horizontal saat animasi.
+- `[FE]` Keunggulan Fasttrack ditulis mengikuti banner resmi: tersedia untuk Sinta 3 s/d 6 dan non Sinta.
+
 ## [2.5] - 2026-10-24
 
 ### Diubah
