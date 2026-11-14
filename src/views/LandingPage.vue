@@ -12,6 +12,7 @@ import KeunggulanKami from '@/components/KeunggulanKami.vue'
 import AlurLayanan from '@/components/AlurLayanan.vue'
 import LOGO from '../../assets/logo-pas.png'
 import NavbarPublik from '@/components/NavbarPublik.vue'
+import LacakNaskah from '@/components/LacakNaskah.vue'
 
 const konten = useKontenStore()
 onMounted(konten.muat)
@@ -113,6 +114,13 @@ function ganti(i) {
       <section class="panel" aria-labelledby="h-alur">
         <h2 id="h-alur" v-muncul="{ arah: 'kiri' }">ALUR LAYANAN</h2>
         <AlurLayanan />
+      </section>
+
+      <section id="lacak" class="panel" aria-labelledby="h-lacak">
+        <h2 id="h-lacak" v-muncul="{ arah: 'kiri' }">LACAK NASKAHMU</h2>
+        <LacakNaskah
+          @bukti="(u) => buka([{ id: 0, url: u, keterangan: 'Bukti status naskah' }], 0)"
+        />
       </section>
 
       <section

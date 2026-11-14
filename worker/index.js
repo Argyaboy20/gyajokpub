@@ -1,5 +1,5 @@
 // Menyajikan foto dari bucket R2 lewat alamat situs sendiri: /foto/<folder>/<uuid>.webp
-const POLA_KUNCI = /^(track-record|pricelist)\/[0-9a-f-]{36}\.webp$/
+const POLA_KUNCI = /^(track-record|pricelist|bukti)\/[0-9a-f-]{36}\.webp$/
 
 export default {
   async fetch(request, env) {
@@ -27,7 +27,9 @@ export default {
 
   async scheduled(_event, _env, ctx) {
     ctx.waitUntil(
-      fetch('https://gyajokpub-api.onrender.com/api/ping', { signal: AbortSignal.timeout(60000) }).catch(() => {}),
+      fetch('https://gyajokpub-api.onrender.com/api/ping', {
+        signal: AbortSignal.timeout(60000),
+      }).catch(() => {}),
     )
   },
 }

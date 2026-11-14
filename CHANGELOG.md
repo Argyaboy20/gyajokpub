@@ -16,6 +16,15 @@ Sebelum merilis versi baru: tambahkan entri di paling atas, ubah `version` di `p
 
 ---
 
+## [5.0] - 2026-11-14
+
+### Ditambahkan
+
+- [FE] Section "LACAK NASKAHMU" di landing page: pengunjung melacak naskah dengan nomor pesanan.
+- [FE] Tab "Lacak Naskah" di dashboard admin: tambah, ubah, hapus pesanan, dropdown status, dan satu foto bukti.
+- [BE] Tabel `Pesanan` (migrasi `pesanan`), nomor pesanan `GJP-YYMMDD-XXXXXX` dibuat server, rute admin `/api/admin/pesanan`, dan rute publik `GET /api/public/lacak/:nomor` (15 pencarian per menit per IP).
+- [INFRA] Worker `/foto/*` kini melayani folder `bukti`.
+
 ## [4.0] - 2026-11-14
 
 ### Ditambahkan

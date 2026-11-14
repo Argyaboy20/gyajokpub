@@ -1,11 +1,21 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
 import { ref, computed } from 'vue'
-import { LogOut, Award, Tag, FileText, Contact, ExternalLink, Info } from 'lucide-vue-next'
+import {
+  LogOut,
+  Award,
+  Tag,
+  FileText,
+  Contact,
+  ExternalLink,
+  Info,
+  PackageSearch,
+} from 'lucide-vue-next'
 import { useAuthStore } from '@/stores/auth'
 import PanelFoto from '@/components/admin/PanelFoto.vue'
 import PanelKontak from '@/components/admin/PanelKontak.vue'
 import PanelTentang from '@/components/admin/PanelTentang.vue'
+import PanelPesanan from '@/components/admin/PanelPesanan.vue'
 import LOGO from '../../../assets/logo-pas.png'
 
 const auth = useAuthStore()
@@ -59,6 +69,7 @@ const TAB = [
   },
   { id: 'kontak', label: 'Kontak', ikon: Contact, tipe: 'kontak' },
   { id: 'tentang', label: 'Tentang', ikon: Info, tipe: 'tentang' },
+  { id: 'pesanan', label: 'Lacak Naskah', ikon: PackageSearch, tipe: 'pesanan', terpisah: true },
 ]
 
 const aktif = ref('track')
@@ -94,7 +105,7 @@ const tab = computed(() => TAB.find((t) => t.id === aktif.value))
           type="button"
           role="tab"
           :aria-selected="aktif === t.id"
-          :class="{ aktif: aktif === t.id }"
+          :class="{ aktif: aktif === t.id, terpisah: t.terpisah }"
           @click="aktif = t.id"
         >
           <component :is="t.ikon" :size="18" aria-hidden="true" />
@@ -106,6 +117,7 @@ const tab = computed(() => TAB.find((t) => t.id === aktif.value))
         <div class="kartu-isi">
           <PanelKontak v-if="tab.tipe === 'kontak'" key="kontak" />
           <PanelTentang v-else-if="tab.tipe === 'tentang'" key="tentang" />
+          <PanelPesanan v-else-if="tab.tipe === 'pesanan'" key="pesanan" />
           <PanelFoto
             v-else
             :key="'foto-' + tab.id"
@@ -226,6 +238,9 @@ const tab = computed(() => TAB.find((t) => t.id === aktif.value))
   background: linear-gradient(135deg, var(--navy-700), var(--teal-600));
   color: #fff;
 }
+.menu button.terpisah {
+  border-color: var(--emas);
+}
 .kartu-isi {
   padding: 1rem;
   border: 1px solid var(--garis);
@@ -288,6 +303,12 @@ const tab = computed(() => TAB.find((t) => t.id === aktif.value))
   }
   .menu button:hover:not(.aktif) {
     background: var(--kertas);
+  }
+  .menu button.terpisah {
+    margin-top: 0.6rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--garis);
+    border-radius: 0 0 10px 10px;
   }
 }
 
