@@ -10,7 +10,8 @@ import ChatWidget from '@/components/ChatWidget.vue'
 import LayananGyajokpub from '@/components/LayananGyajokpub.vue'
 import KeunggulanKami from '@/components/KeunggulanKami.vue'
 import AlurLayanan from '@/components/AlurLayanan.vue'
-import LOGO from '../../assets/logogyajokpub.png'
+import LOGO from '../../assets/logo-pas.png'
+import NavbarPublik from '@/components/NavbarPublik.vue'
 
 const konten = useKontenStore()
 onMounted(konten.muat)
@@ -38,6 +39,7 @@ function ganti(i) {
 
 <template>
   <div class="landing">
+    <NavbarPublik />
     <header class="hero">
       <span class="chip">
         <img v-if="!logoGagal" :src="LOGO" alt="GyaJokPub" @error="logoGagal = true" />
@@ -54,9 +56,9 @@ function ganti(i) {
       <section class="panel" aria-labelledby="h-tentang">
         <h2 id="h-tentang" v-muncul="{ arah: 'kiri' }">TENTANG GYAJOKPUB</h2>
         <p class="narasi">
-          GyaJokPub hadir untuk memberikan solusi publikasi jurnal yang lebih mudah, aman, dan terjangkau. Mulai dari
-          Sinta 1–6, non sinta nasional hingga non sinta internasional, hingga Scopus Q3 dan Q4 dengan pendampingan
-          penuh sampai artikel terbit.
+          GyaJokPub hadir untuk memberikan solusi publikasi jurnal yang lebih mudah, aman, dan
+          terjangkau. Mulai dari Sinta 1–6, non sinta nasional hingga non sinta internasional,
+          hingga Scopus Q3 dan Q4 dengan pendampingan penuh sampai artikel terbit.
         </p>
       </section>
 
@@ -87,7 +89,11 @@ function ganti(i) {
         </section>
 
         <template v-for="p in PRICELIST" :key="p.kunci">
-          <section v-if="(konten.data.pricelist[p.kunci] ?? []).length" class="panel" :aria-labelledby="'h-' + p.kunci">
+          <section
+            v-if="(konten.data.pricelist[p.kunci] ?? []).length"
+            class="panel"
+            :aria-labelledby="'h-' + p.kunci"
+          >
             <h2 :id="'h-' + p.kunci" v-muncul="{ arah: 'kiri' }">{{ p.judul }}</h2>
             <GaleriFoto
               :foto="konten.data.pricelist[p.kunci]"
@@ -138,19 +144,18 @@ function ganti(i) {
 }
 
 .hero {
-  padding: 2rem 1.25rem 3.75rem;
+  padding: 5.5rem 1.25rem 3.75rem;
   background:
     radial-gradient(circle at 88% 0%, rgba(255, 255, 255, 0.16), transparent 45%),
-    radial-gradient(circle at 8% 100%, rgba(212, 169, 74, 0.2), transparent 42%),
-    var(--gradien);
+    radial-gradient(circle at 8% 100%, rgba(212, 169, 74, 0.2), transparent 42%), var(--gradien);
   color: #fff;
   text-align: center;
 }
 .chip {
   display: inline-grid;
   place-items: center;
-  padding: 0.8rem 1.2rem;
-  border-radius: 16px;
+  padding: 0.55rem 0.8rem;
+  border-radius: 14px;
   background: #fff;
   box-shadow: 0 12px 28px -14px rgba(0, 0, 0, 0.55);
 }
@@ -216,7 +221,7 @@ h1 {
   border-radius: 18px;
   background: var(--permukaan);
   box-shadow: var(--bayangan);
-  scroll-margin-top: 1rem;
+  scroll-margin-top: 5rem;
 }
 h2 {
   margin: 0 0 1.1rem;
@@ -243,8 +248,7 @@ h2::after {
 .panel.kontak {
   border: 0;
   background:
-    radial-gradient(circle at 90% 0%, rgba(255, 255, 255, 0.14), transparent 45%),
-    var(--gradien);
+    radial-gradient(circle at 90% 0%, rgba(255, 255, 255, 0.14), transparent 45%), var(--gradien);
   color: #fff;
 }
 
@@ -303,7 +307,7 @@ h2::after {
 /* Tablet */
 @media (min-width: 641px) {
   .hero {
-    padding: 2.75rem 1.5rem 4.5rem;
+    padding: 6rem 1.5rem 4.5rem;
   }
   .chip img {
     max-height: 96px;
@@ -331,7 +335,7 @@ h2::after {
 /* Desktop */
 @media (min-width: 768px) {
   .hero {
-    padding: 3.5rem 2rem 5.5rem;
+    padding: 6.5rem 2rem 5.5rem;
   }
   .chip img {
     max-height: 112px;
@@ -360,10 +364,10 @@ h2::after {
 /* Large desktop */
 @media (min-width: 1024px) {
   .hero {
-    padding: 4.5rem 2.5rem 6.5rem;
+    padding: 7rem 2.5rem 6.5rem;
   }
   .chip {
-    padding: 1rem 1.6rem;
+    padding: 0.7rem 1rem;
   }
   .chip img {
     max-height: 128px;

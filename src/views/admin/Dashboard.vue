@@ -1,10 +1,12 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
 import { ref, computed } from 'vue'
-import { LogOut, Award, Tag, FileText, Contact, ExternalLink } from 'lucide-vue-next'
+import { LogOut, Award, Tag, FileText, Contact, ExternalLink, Info } from 'lucide-vue-next'
 import { useAuthStore } from '@/stores/auth'
 import PanelFoto from '@/components/admin/PanelFoto.vue'
 import PanelKontak from '@/components/admin/PanelKontak.vue'
-import LOGO from '../../../assets/logogyajokpub.png'
+import PanelTentang from '@/components/admin/PanelTentang.vue'
+import LOGO from '../../../assets/logo-pas.png'
 
 const auth = useAuthStore()
 
@@ -56,6 +58,7 @@ const TAB = [
     bentuk: 'persegi',
   },
   { id: 'kontak', label: 'Kontak', ikon: Contact, tipe: 'kontak' },
+  { id: 'tentang', label: 'Tentang', ikon: Info, tipe: 'tentang' },
 ]
 
 const aktif = ref('track')
@@ -102,6 +105,7 @@ const tab = computed(() => TAB.find((t) => t.id === aktif.value))
       <main class="isi">
         <div class="kartu-isi">
           <PanelKontak v-if="tab.tipe === 'kontak'" key="kontak" />
+          <PanelTentang v-else-if="tab.tipe === 'tentang'" key="tentang" />
           <PanelFoto
             v-else
             :key="'foto-' + tab.id"
@@ -128,8 +132,7 @@ const tab = computed(() => TAB.find((t) => t.id === aktif.value))
   gap: 0.75rem;
   padding: 0.9rem 1rem 1.1rem;
   background:
-    radial-gradient(circle at 90% 0%, rgba(255, 255, 255, 0.14), transparent 45%),
-    var(--gradien);
+    radial-gradient(circle at 90% 0%, rgba(255, 255, 255, 0.14), transparent 45%), var(--gradien);
   color: #fff;
 }
 .merek {
@@ -140,13 +143,13 @@ const tab = computed(() => TAB.find((t) => t.id === aktif.value))
 .chip {
   display: grid;
   place-items: center;
-  padding: 0.3rem 0.6rem;
+  padding: 0.3rem 0.5rem;
   border-radius: 10px;
   background: #fff;
 }
 .chip img {
   display: block;
-  height: 34px;
+  height: 30px;
 }
 .chip strong {
   color: var(--navy-900);

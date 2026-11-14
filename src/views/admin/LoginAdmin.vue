@@ -1,10 +1,19 @@
 <script setup>
 import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import { Mail, LockKeyhole, KeyRound, Eye, EyeOff, ShieldCheck, LoaderCircle, CircleAlert } from 'lucide-vue-next'
+import {
+  Mail,
+  LockKeyhole,
+  KeyRound,
+  Eye,
+  EyeOff,
+  ShieldCheck,
+  LoaderCircle,
+  CircleAlert,
+} from 'lucide-vue-next'
 import { useAuthStore } from '@/stores/auth'
 import { buatTurnstile } from '@/utils/turnstile'
-import LOGO from '../../../assets/logogyajokpub.png'
+import LOGO from '../../../assets/logo-pas.png'
 
 const auth = useAuthStore()
 const router = useRouter()
@@ -171,8 +180,7 @@ async function kirim() {
 .merek {
   padding: 2rem 1.25rem 4.5rem;
   background:
-    radial-gradient(circle at 88% 8%, rgba(255, 255, 255, 0.14), transparent 42%),
-    var(--gradien);
+    radial-gradient(circle at 88% 8%, rgba(255, 255, 255, 0.14), transparent 42%), var(--gradien);
   color: #fff;
   text-align: center;
 }
@@ -180,13 +188,13 @@ async function kirim() {
   display: inline-grid;
   place-items: center;
   margin-bottom: 1.25rem;
-  padding: 0.9rem 1.4rem; 
+  padding: 0.6rem 0.9rem;
   border-radius: 16px;
   background: #fff;
 }
 .chip img {
   display: block;
-  max-height: 84px;
+  max-height: 66px;
 }
 .chip span {
   color: var(--navy-900);
@@ -364,8 +372,8 @@ input:-webkit-autofill {
   .merek h1 {
     font-size: 1.3rem;
   }
-  .chip img { 
-    max-height: 100px; 
+  .chip img {
+    max-height: 79px;
   }
   .merek p {
     font-size: 1rem;
@@ -395,8 +403,8 @@ input:-webkit-autofill {
   .merek h1 {
     font-size: 1.5rem;
   }
-  .chip img { 
-    max-height: 120px; 
+  .chip img {
+    max-height: 95px;
   }
   .merek p {
     max-width: 34ch;
@@ -428,8 +436,8 @@ input:-webkit-autofill {
   .merek h1 {
     font-size: 1.75rem;
   }
-  .chip img { 
-    max-height: 140px; 
+  .chip img {
+    max-height: 111px;
   }
   .kartu {
     max-width: 460px;

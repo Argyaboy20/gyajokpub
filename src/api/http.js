@@ -32,7 +32,9 @@ export async function http(path, { method = 'GET', body, form, auth = false } = 
 
   let res
   try {
-    res = await fetch(`${BASE}${path}`, { method, headers, body: payload })
+    const opsi = { method, headers }
+    if (payload !== undefined) opsi.body = payload
+    res = await fetch(`${BASE}${path}`, opsi)
   } catch {
     throw new ApiError(0, 'Tidak dapat terhubung ke server')
   }
